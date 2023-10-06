@@ -1,11 +1,15 @@
 package View;
 
+import Account.Account;
+import Cart.Cart;
+import Cart.CartManager;
 import Manager.CameraManager;
 import Model.Body;
 import Model.Camera;
 import Model.Lens;
 import Validate.Validate;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -13,11 +17,15 @@ import java.util.Scanner;
 public class Menu {
     Scanner inputString = new Scanner(System.in);
     CameraManager cameraManager = new CameraManager();
+    CartManager cartManager = new CartManager();
+    Account currentAccount;
 
-    public void MainMenu() {
+    public void MainMenu(Account account) {
+        currentAccount = account;
+        System.out.println(currentAccount);
         int choice;
         do {
-            System.out.println("|_______________Menu Admin__________________|\n|1.Thêm thông tin máy ảnh___________________|\n|2.Sửa thông tin máy ảnh____________________|\n|3.Xóa thông tin mấy ảnh____________________|\n|4.Tìm kiếm máy ảnh theo tên________________|\n|5.Tìm kiếm máy ảnh theo công ty____________|\n|6.Hiển thị thông tin máy ảnh hoặc ống kinh_|\n|7.Hiển thị các loại máy ảnh trong cửa hàng_|\n|8.Hiển thị các loại ống kính trong cửa hàng|\n|0.thoát____________________________________|\n|___________________________________________|");
+            System.out.println("|_______________Menu Admin__________________|\n|1.Thêm thông tin máy ảnh___________________|\n|2.Sửa thông tin máy ảnh____________________|\n|3.Xóa thông tin mấy ảnh____________________|\n|4.Tìm kiếm máy ảnh theo tên________________|\n|5.Tìm kiếm máy ảnh theo công ty____________|\n|6.Hiển thị thông tin máy ảnh hoặc ống kinh_|\n|7.Hiển thị các loại máy ảnh trong cửa hàng_|\n|8.Hiển thị các loại ống kính trong cửa hàng|\n|9.Hiển thị thông tin mua hàng______________|\n|0.thoát____________________________________|\n|___________________________________________|");
             System.out.println("Nhập lựa chọn của bạn:");
             choice = Validate.checkInt();
             switch (choice) {
@@ -45,15 +53,20 @@ public class Menu {
                 case 8:
                     showAllLens();
                     break;
+                case 9:
+                    //checkBill();
+                    break;
             }
 
         } while (choice != 0);
     }
 
-    public void MenuUser() {
+    public void MenuUser(Account account) {
+        currentAccount = account;
+        System.out.println(currentAccount);
         int choice;
         do {
-            System.out.println("|________________Menu User__________________|\n|1.Tìm kiếm máy ảnh theo tên________________|\n|2.Tìm kiếm máy ảnh theo công ty____________|\n|3.Hiển thị thông tin máy ảnh hoặc ống kinh_|\n|4.Hiển thị các loại máy ảnh trong cửa hàng_|\n|5.Hiển thị các loại ống kính trong cửa hàng|\n|0.thoát____________________________________|\n|___________________________________________|");
+            System.out.println("|________________Menu User__________________|\n|1.Tìm kiếm máy ảnh theo tên________________|\n|2.Tìm kiếm máy ảnh theo công ty____________|\n|3.Hiển thị thông tin máy ảnh hoặc ống kinh_|\n|4.Hiển thị các loại máy ảnh trong cửa hàng_|\n|5.Hiển thị các loại ống kính trong cửa hàng|\n|6.Thêm sản phẩm vào giỏ hàng_______________|\n|7.Xóa sản phẩm trong giỏ hàng______________|\n|8.Kiểm tra sản phẩm trong giỏ hàng_________|\n|0.thoát____________________________________|\n|___________________________________________|");
             System.out.println("Nhập lựa chọn của bạn:");
             choice = Validate.checkInt();
             switch (choice) {
@@ -72,9 +85,64 @@ public class Menu {
                 case 5:
                     showAllLens();
                     break;
+                case 6:
+                    addProductToCart(currentAccount);
+                    break;
+                case 7:
+                    deleteProductInCart(currentAccount);
+                    break;
+                case 8:
+                    showAllCartProduct(currentAccount);
+                    break;
             }
 
         } while (choice != 0);
+    }
+
+    private void deleteProductInCart(Account account) {
+        System.out.println("Nhập id bạn muốn  xóa trong giỏ hàng");
+        int idDeleteCart;
+        do {
+            System.out.println("Nhập id");
+            idDeleteCart = Validate.checkInt();
+            if (cameraManager.checkIdInList(idDeleteCart)) {
+                break;
+            } else {
+                System.out.println("Id không tồn tại, vui lòng nhập lại");
+            }
+        } while (true);
+        cartManager.deleteInCart(idDeleteCart);
+        System.out.println("===> xóa sản phẩm trong giỏ hàng thành công");
+    }
+
+    private void showAllCartProduct(Account account) {
+        String emailAccount = account.getEmail();
+        List<Cart> listCart = cartManager.showAllProductInCart(emailAccount);
+        for (Cart cart : listCart
+        ) {
+            System.out.println(cart);
+        }
+    }
+
+    private void addProductToCart(Account account) {
+        String emailAccount = account.getEmail();
+        System.out.println("Nhập id sản phẩm muốn thêm vào giỏ hàng");
+        int id;
+        do {
+            System.out.println("Nhập id");
+            id = Validate.checkInt();
+            if (cameraManager.checkIdInList(id)) {
+                break;
+            } else {
+                System.out.println("Id không tồn tại, vui lòng nhập lại");
+            }
+        } while (true);
+        List<Camera> listProductInCart = new ArrayList<>();
+        Camera product = cameraManager.searchProductById(id);
+        listProductInCart.add(product);
+        Cart cart = new Cart(emailAccount, listProductInCart);
+        cartManager.addToCart(cart);
+        System.out.println("===> Thêm vào giỏ hàng thành công");
     }
 
     private void showMenuAddCamera() {

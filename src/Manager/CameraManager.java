@@ -117,4 +117,15 @@ public class CameraManager implements ICameraManager<Camera> {
         return newlist;
     }
 
+    @Override
+    public Camera searchProductById(int id) {
+        for (Camera camera : cameraList
+        ) {
+            if (camera.getId() == id) {
+                return camera;
+            }
+        }
+        return null;
+    }
+
 }

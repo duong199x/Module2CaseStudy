@@ -18,5 +18,6 @@ public interface ICameraManager<E> {
     public List<E> showAll();
     public List<E> showAllBody();
     public List<E> showAllLens();
+    public E searchProductById(int id);
 
 }

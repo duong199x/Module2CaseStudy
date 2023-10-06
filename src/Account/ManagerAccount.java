@@ -6,8 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ManagerAccount implements IAccountManager<Account> {
-    ReadAndWriteAccount readAndWriteAccount;
-    List<Account> listAccount;
+    private ReadAndWriteAccount readAndWriteAccount;
+    private List<Account> listAccount;
+    public static Account currentUser;
 
     public ManagerAccount() {
 
@@ -34,15 +35,18 @@ public class ManagerAccount implements IAccountManager<Account> {
         for (Account account : listAccount
         ) {
             if (email.equals(account.getEmail()) && password.equals(account.getPassword()) && account.getRole() == 2) {
+                currentUser = account;
                 return true;
             }
         }
         return false;
     }
-    public boolean checkAdmin(String email, String password){
+
+    public boolean checkAdmin(String email, String password) {
         for (Account account : listAccount
         ) {
             if (email.equals(account.getEmail()) && password.equals(account.getPassword()) && account.getRole() == 1) {
+                currentUser = account;
                 return true;
             }
         }

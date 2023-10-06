@@ -53,9 +53,9 @@ public class MenuAccount {
         System.out.println("Nhập mật khẩu:");
         String password = Validate.inputPassWord();
         if (managerAccount.checkAdmin(email, password)) {
-            menu.MainMenu();
+            menu.MainMenu(ManagerAccount.currentUser);
         } else if (managerAccount.checkUser(email, password)) {
-            menu.MenuUser();
+            menu.MenuUser(ManagerAccount.currentUser);
         } else {
             System.out.println("Sai tài khoản hoặc mật khẩu! Bạn hãy đăng nhập lại");
         }
