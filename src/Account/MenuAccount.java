@@ -1,16 +1,21 @@
 package Account;
 
+import cart.Cart;
+import Model.Camera;
 import Validate.Validate;
 import View.Menu;
+import cart.CartManager;
 
-import java.sql.SQLOutput;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class MenuAccount {
     ManagerAccount managerAccount = new ManagerAccount();
     public final int roleUser = 2;
     Scanner inputString = new Scanner(System.in);
-    Menu menu = new Menu();
+    CartManager cartManager = new CartManager();
+    Menu menu = new Menu(cartManager);
 
     public void MenuLogin() {
         int choice;
@@ -44,6 +49,9 @@ public class MenuAccount {
         String address = inputString.nextLine();
         Account account = new Account(email, password, userName, phoneNumber, address, roleUser);
         managerAccount.register(account);
+        Cart cart = new Cart(email);
+        cartManager.addToCart(cart);
+        System.out.println("===> đăng kí thành công");
     }
 
     private void showMenuLogin() {

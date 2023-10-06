@@ -1,4 +1,4 @@
-package Cart;
+package cart;
 
 import java.util.List;
 
@@ -8,6 +8,7 @@ public interface ICartManager<E> {
     public void deleteInCart(int id);
 
     public int searchIndexById(int id);
-    public List<E> showAllProductInCart(String string);
+
+    public Cart showCart(String string);
 
 }

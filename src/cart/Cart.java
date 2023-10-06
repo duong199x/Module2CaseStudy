@@ -1,7 +1,8 @@
-package Cart;
+package cart;
 
 import Model.Camera;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Cart {
@@ -10,11 +11,17 @@ public class Cart {
     private List<Camera> listProductInCart;
     private static int idIncrement = 1;
 
-    public Cart(String userNameUser, List<Camera> listProductInCart) {
+    public Cart(String userNameUser) {
         this.id = idIncrement;
         this.userNameUser = userNameUser;
-        this.listProductInCart = listProductInCart;
+        this.listProductInCart = new ArrayList<>();
         idIncrement++;
+    }
+
+    public Cart(int id, String userNameUser, List<Camera> listProductInCart) {
+        this.id = id;
+        this.userNameUser = userNameUser;
+        this.listProductInCart = listProductInCart;
     }
 
     public int getId() {
