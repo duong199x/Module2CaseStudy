@@ -73,7 +73,6 @@ public class ReadAndWriteCart {
             String line = null;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] data = line.split(",");
-                System.out.println(data[2]);
                 Cart cart = new Cart(Integer.parseInt(data[0]), data[1], readListCamera(data[2]));
                 list.add(cart);
             }
@@ -87,7 +86,6 @@ public class ReadAndWriteCart {
     public List<Camera> readListCamera(String string) {
         List<Camera> list = new ArrayList<>();
         String[] data = string.split("\\.");
-        System.out.println(Arrays.toString(data));
         for (int i = 0; i < data.length; i++) {
             list.add(readCameraObject(data[i]));
         }

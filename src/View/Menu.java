@@ -8,6 +8,7 @@ import Model.Body;
 import Model.Camera;
 import Model.Lens;
 import Validate.Validate;
+import dto.ReadAnfWriteBill;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,9 +20,11 @@ public class Menu {
     CameraManager cameraManager = new CameraManager();
     CartManager cartManager;
     Account currentAccount;
+    ReadAnfWriteBill readAnfWriteBill;
 
     public Menu(CartManager cartManager) {
         this.cartManager = cartManager;
+        readAnfWriteBill = new ReadAnfWriteBill();
     }
 
     public void MainMenu(Account account) {
@@ -58,11 +61,16 @@ public class Menu {
                     showAllLens();
                     break;
                 case 9:
-                    //checkBill();
+                    checkBill();
                     break;
             }
 
         } while (choice != 0);
+    }
+
+    private void checkBill() {
+        System.out.println(readAnfWriteBill.ReadBill());
+
     }
 
     public void MenuUser(Account account) {
@@ -98,10 +106,19 @@ public class Menu {
                 case 8:
                     showAllCartProduct(currentAccount);
                     break;
+                case 9:
+                    buy(currentAccount, cartManager.showCart(account.getEmail()));
+                    break;
             }
 
         } while (choice != 0);
     }
+
+    private void buy(Account currentAccount, Cart cart) {
+        readAnfWriteBill.writeFile(currentAccount, cart);
+        System.out.println("===> Mua thành công");
+    }
+
 
     private void deleteProductInCart(Account account) {
         System.out.println("Nhập id bạn muốn  xóa trong giỏ hàng");
@@ -115,7 +132,7 @@ public class Menu {
                 System.out.println("Id không tồn tại, vui lòng nhập lại");
             }
         } while (true);
-        cartManager.deleteProductInCard(idDeleteCart,account.getEmail());
+        cartManager.deleteProductInCard(idDeleteCart, account.getEmail());
         System.out.println("===> xóa sản phẩm trong giỏ hàng thành công");
     }
 
