@@ -38,6 +38,7 @@ public class ReadAndWriteCart {
         for (int i = 0; i < list.size(); i++) {
             str += list.get(i).getId() + ";" + list.get(i).getName() + ";" + df.format(list.get(i).getReleaseDate()) + ";" + list.get(i).getCompanyProduction() + ";" + list.get(i).getPrice() + ";" + writeCameraComponents(list.get(i)) + ";" + writeCameraComponents_type(list.get(i)) + ".";
         }
+        if(str.isEmpty()) return "null";
         return str;
     }
 
@@ -85,9 +86,10 @@ public class ReadAndWriteCart {
 
     public List<Camera> readListCamera(String string) {
         List<Camera> list = new ArrayList<>();
+        if(string.equals("null")) return list;
         String[] data = string.split("\\.");
-        for (int i = 0; i < data.length; i++) {
-            list.add(readCameraObject(data[i]));
+        for (String datum : data) {
+            list.add(readCameraObject(datum));
         }
         return list;
     }

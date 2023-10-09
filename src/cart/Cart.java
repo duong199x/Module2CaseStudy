@@ -19,9 +19,10 @@ public class Cart {
     }
 
     public Cart(int id, String userNameUser, List<Camera> listProductInCart) {
-        this.id = id;
+        this.id = idIncrement;
         this.userNameUser = userNameUser;
         this.listProductInCart = listProductInCart;
+        idIncrement++;
     }
 
     public int getId() {
@@ -63,5 +64,14 @@ public class Cart {
                 ", userNameUser='" + userNameUser + '\'' +
                 ", listProductInCart=" + listProductInCart +
                 '}';
+    }
+
+    public int searchIndexByIdInCart(int id) {
+        for (int i = 0; i < listProductInCart.size(); i++) {
+            if (listProductInCart.get(i).getId() == id) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

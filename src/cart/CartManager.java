@@ -15,7 +15,7 @@ public class CartManager implements ICartManager<Cart> {
     public CartManager() {
         readAndWriteCart = new ReadAndWriteCart();
 //        if (readAndWriteCart.ReadFile() != null) {
-            listCameraCart = readAndWriteCart.ReadFile();
+        listCameraCart = readAndWriteCart.ReadFile();
 //        } else {
 //            listCameraCart = new ArrayList<>();
 //        }
@@ -43,28 +43,22 @@ public class CartManager implements ICartManager<Cart> {
 
     public void deleteProductInCard(int id, String string) {
         int index = -1;
-        for (Cart cart : listCameraCart
-        ) {
-            if (cart.getUserNameUser().equals(string)) {
-                for (Camera camera : cart.getListProductInCart()
-                ) {
-                    if (camera.getId() == id) {
-                        for (int i = 0; i < cart.getListProductInCart().size(); i++) {
-                            if (id == cart.getListProductInCart().get(i).getId()) {
-                                index = i;
-                            }
-                        }
+        for (int i = 0; i < listCameraCart.size(); i++) {
+            if (listCameraCart.get(i).getUserNameUser().equals(string)) {
+                for (int j = 0; j < listCameraCart.get(i).getListProductInCart().size(); j++) {
+                    if (listCameraCart.get(i).getListProductInCart().get(j).getId() == id) {
+                        index = listCameraCart.get(i).searchIndexByIdInCart(id);
                     }
                 }
+                listCameraCart.get(i).getListProductInCart().remove(index);
             }
-            cart.getListProductInCart().remove(index);
         }
-
+        readAndWriteCart.writeFile(listCameraCart);
     }
 
     public int searchIndexById(int id) {
         for (int i = 0; i < listCameraCart.size(); i++) {
-            if (id == listCameraCart.get(i).getId()) {
+            if (listCameraCart.get(i).getId() == id) {
                 return i;
             }
         }
